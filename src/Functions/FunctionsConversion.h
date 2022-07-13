@@ -192,6 +192,9 @@ struct ConvertImpl
             }
 
             bool result_is_bool = isBool(result_type);
+#ifdef __clang__
+#pragma clang loop vectorize(disable) // auto-vectorization leads to slower performance than if disabled
+#endif
             for (size_t i = 0; i < input_rows_count; ++i)
             {
                 if constexpr (std::is_same_v<ToDataType, DataTypeUInt8>)
