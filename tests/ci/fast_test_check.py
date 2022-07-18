@@ -94,7 +94,7 @@ if __name__ == "__main__":
 
     rerun_helper = RerunHelper(gh, pr_info, NAME)
     finished_by_status = rerun_helper.get_finished_status()
-    if finished_by_status is not None:
+    if finished_by_status not in ["success", "failure"]:
         if (SKIP_SIMPLE_CHECK_LABEL not in pr_info.labels and
             finished_by_status != "success" and
             (FORCE_TESTS_LABEL not in pr_info.labels or finished_by_status == "error")
