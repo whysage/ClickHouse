@@ -82,7 +82,7 @@ if __name__ == "__main__":
 
     rerun_helper = RerunHelper(gh, pr_info, NAME)
     finished_by_status = rerun_helper.get_finished_status()
-    if finished_by_status is not None:
+    if finished_by_status in ["success", "failure"]:
         if SKIP_SIMPLE_CHECK_LABEL not in pr_info.labels and finished_by_status != "success":
             url = (
                 f"{GITHUB_SERVER_URL}/{GITHUB_REPOSITORY}/"
