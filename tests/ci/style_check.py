@@ -83,7 +83,10 @@ if __name__ == "__main__":
     rerun_helper = RerunHelper(gh, pr_info, NAME)
     finished_by_status = rerun_helper.get_finished_status()
     if finished_by_status in ["success", "failure"]:
-        if SKIP_SIMPLE_CHECK_LABEL not in pr_info.labels and finished_by_status != "success":
+        if (
+            SKIP_SIMPLE_CHECK_LABEL not in pr_info.labels
+            and finished_by_status != "success"
+        ):
             url = (
                 f"{GITHUB_SERVER_URL}/{GITHUB_REPOSITORY}/"
                 "blob/master/.github/PULL_REQUEST_TEMPLATE.md?plain=1"
@@ -96,7 +99,7 @@ if __name__ == "__main__":
                 target_url=url,
             )
 
-        logging.info("Check is already finished according to github status, exiting")        
+        logging.info("Check is already finished according to github status, exiting")
         sys.exit(0)
 
     if not os.path.exists(temp_path):
