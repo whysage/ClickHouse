@@ -81,8 +81,22 @@ if __name__ == "__main__":
     gh = Github(get_best_robot_token())
 
     rerun_helper = RerunHelper(gh, pr_info, NAME)
-    if rerun_helper.is_already_finished_by_status():
-        logging.info("Check is already finished according to github status, exiting")
+    finished_by_status = rerun_helper.get_finished_status()
+    if finished_by_status is not None:
+        if SKIP_SIMPLE_CHECK_LABEL not in pr_info.labels and finished_by_status != "success":
+            url = (
+                f"{GITHUB_SERVER_URL}/{GITHUB_REPOSITORY}/"
+                "blob/master/.github/PULL_REQUEST_TEMPLATE.md?plain=1"
+            )
+            commit = get_commit(gh, pr_info.sha)
+            commit.create_status(
+                context="Simple Check",
+                description=f"{NAME} failed",
+                state="failed",
+                target_url=url,
+            )
+
+        logging.info("Check is already finished according to github status, exiting")        
         sys.exit(0)
 
     if not os.path.exists(temp_path):
