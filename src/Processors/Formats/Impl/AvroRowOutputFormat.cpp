@@ -179,7 +179,7 @@ AvroSerializer::SchemaWithSerializeFn AvroSerializer::createSchemaWithSerializeF
             if (traits->isStringAsString(column_name))
                 return {avro::StringSchema(), [](const IColumn & column, size_t row_num, avro::Encoder & encoder)
                     {
-                        const std::string_ref & s = assert_cast<const ColumnString &>(column).getDataAt(row_num).toView();
+                        const std::string_view & s = assert_cast<const ColumnString &>(column).getDataAt(row_num).toView();
                         encoder.encodeString(std::string(s));
                     }
                 };
